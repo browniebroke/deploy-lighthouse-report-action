@@ -1,0 +1,21 @@
+name: 'Deploy lighthouse report'
+description: 'Deploy lighthouse report to Vercel'
+branding:
+  icon: eye
+  color: green
+runs:
+  using: "composite"
+  steps: 
+    - shell: bash
+      run: |
+        vercel -t ${{ secrets.VERCEL_TOKEN }} deploy ./report/https*.html | tee vercel-now.log
+        TARGET_URL=`tail -n1 vercel-now.log`
+        curl -X POST https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }} \
+          -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" \
+          -d "{
+            \"state\": \"success\",
+            \"target_url\": \"${TARGET_URL}\",
+            \"description\": \"Lighthouse report\",
+            \"context\": \"lighthouse-report\"
+          }"
+      
