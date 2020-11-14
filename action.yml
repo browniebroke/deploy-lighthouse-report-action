@@ -5,7 +5,7 @@ inputs:
     description: 'Vercel Token'
     required: true
   github_token:
-    description: 'Vercel Token'
+    description: 'Github Token'
     required: true
 runs:
   using: "composite"
