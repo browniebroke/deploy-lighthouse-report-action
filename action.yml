@@ -14,7 +14,7 @@ runs:
       run: |
         vercel -t ${{ inputs.vercel_token }} deploy ./report/https*.html | tee vercel-now.log
         TARGET_URL=`tail -n1 vercel-now.log`
-        curl -X POST https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.event.client_payload.LAST_COMMIT_SHA }} \
+        curl -X POST https://api.github.com/repos/${{ github.repository }}/statuses/${{ github.sha }} \
           -H "Authorization: Bearer ${{ inputs.github_token }}" \
           -d "{
             \"state\": \"success\",
